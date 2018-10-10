@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
-def index(request):
+def get_issues(request):
     """
-    Return the index.html file
+    Return the issues.html file
     """
-    return render(request, "index.html")
+    return render(request, "issues.html")

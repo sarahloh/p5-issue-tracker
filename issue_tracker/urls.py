@@ -20,6 +20,6 @@ from tickets import urls as urls_tickets
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include(urls_accounts)),
     path('', include(urls_tickets)),
+    path('accounts/', include(urls_accounts)),
 ]
