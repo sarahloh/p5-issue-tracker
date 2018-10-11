@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
-def get_issues(request):
+def get_tickets(request):
     """
-    Return the issues.html file
+    Return the tickets.html file
     """
-    return render(request, "issues.html")
+    return render(request, "tickets.html")

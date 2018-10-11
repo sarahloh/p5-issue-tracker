@@ -3,5 +3,5 @@ from tickets import views
 
 
 urlpatterns = [
-    path('', views.get_issues, name='index'),
+    path('', views.get_tickets, name='index'),
 ]
