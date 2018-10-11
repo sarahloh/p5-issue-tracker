@@ -1,15 +1,25 @@
 {% extends 'base.html' %}
 
-{% block page_heading %}Issues Tracker{% endblock %}
+{% block page_heading %}All Issues{% endblock %}
 
 {% block content %}
+{% for ticket in tickets %}
 <div class="row">
-    {% for ticket in tickets %}
-    <div class="col-12">
-        <h4><a href="{% url 'get_ticket' ticket.id %}">{{ ticket.title }}</a></h4>
+    <div class="col-2 col-sm-1 upvotes text-center">
+        <h5>{{ ticket.upvotes }}</h5>
+        {% if user in ticket.upvoted_by.all %}
+        <i class="fas fa-thumbs-up"></i>
+        {% else %}
+        <a href="{% url 'upvote_ticket' ticket.id ticket.category user.id %}">
+            <i class="far fa-thumbs-up"></i>
+        </a>
+        {% endif %}
+    </div>
+    <div class="col-10 col-sm-11">
+        <h5><a href="{% url 'get_ticket' ticket.id %}">{{ ticket.title }}</a></h5>
         <p class="text-muted">#{{ticket.id}} opened at {{ ticket.created_date.time }} on {{ ticket.created_date.date }} by {% if ticket.user %}{{ ticket.user }}{% else %}Anonymous{% endif%}</p>
     </div>
-    {% endfor %}
 </div>
+{% endfor %}
 
 {% endblock %}

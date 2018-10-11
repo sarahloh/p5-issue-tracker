@@ -1,7 +1,31 @@
 {% extends 'base.html' %}
 
-{% block page_heading %}Ticket{% endblock %}
+{% block page_heading %}#{{ticket.id}} {{ticket.title}}{% endblock %}
 
 {% block content %}
-<h3>{{ticket.title}}</h3>
+<div class="row">
+    <div class="col-12">
+        <p>
+            Status: {{ ticket.status }}
+        </p>
+        <p>
+            Upvotes: {{ ticket.upvotes }}
+        </p>
+        <p>
+            Category: {{ ticket.category }}
+        </p>
+        <p>
+            Created: {{ ticket.created_date.date }} at {{ ticket.created_date.time}}
+        </p>
+        <p>
+            Updated: {{ ticket.last_modified_date.date }} at {{ ticket.last_modified_date.time}}
+        </p>
+        <p>
+            Author: {% if ticket.user %}{{ ticket.user }}{% else %}Anonymous{% endif%}
+        </p>
+        <p>
+            Description: {{ ticket.description }}
+        </p>
+    </div>
+</div>
 {% endblock %}

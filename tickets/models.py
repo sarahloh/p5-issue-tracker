@@ -14,7 +14,7 @@ STATUS_CHOICES = (
 )
 
 class Ticket(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='ticket_creator')
     title = models.CharField(max_length=255)
     description = models.TextField()
     category = models.CharField(max_length=7, choices=CATEGORY_CHOICES, default='BUG')
@@ -22,6 +22,7 @@ class Ticket(models.Model):
     upvotes = models.IntegerField(default=0)
     created_date = models.DateTimeField(auto_now_add=True)
     last_modified_date = models.DateTimeField(auto_now=True)
+    upvoted_by = models.ManyToManyField(User, related_name='ticket_upvoters')
 
     def __str__(self):
         return self.title

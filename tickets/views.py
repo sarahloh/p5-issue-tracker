@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from .models import Ticket
 from .forms import TicketForm
 
@@ -24,9 +26,8 @@ def create_or_edit_ticket(request, pk=None):
     """
     Create or edit a ticket depending if the ticket ID is null or not
     """
-    ticket = get_object_or_404(ticket, pk=pk) if pk else None
+    ticket = get_object_or_404(Ticket, pk=pk) if pk else None
     if request.method == "POST":
-        print(request.POST, request.user)
         form = TicketForm(request.POST, instance=ticket)
         if form.is_valid():
             ticket = form.save()
@@ -36,3 +37,32 @@ def create_or_edit_ticket(request, pk=None):
     else:
         form = TicketForm(instance=ticket)
     return render(request, "ticketform.html", {'form': form})
+
+
+@login_required
+def upvote_ticket(request, pk, category, user_id):
+    """
+    Add an upvote to a ticket
+    Redirect to payment if ticket category is feature
+    Or return a 404 error if post not found
+    """
+    ticket = get_object_or_404(Ticket, pk=pk)
+    if category == 'BUG':
+        ticket.upvotes += 1
+        upvoter = User.objects.get(id=user_id)
+        ticket.upvoted_by.add(upvoter)
+        ticket.save()
+        return redirect(all_tickets)
+    else:
+        return redirect(complete_payment)
+
+
+def complete_payment(request):
+    """
+    Return the payments.html file
+    """
+    return render(request, "payment.html")
+
+
+
+
