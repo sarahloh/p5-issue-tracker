@@ -1,3 +1,29 @@
+a {
+    color: #dc3545;
+}
+
+a:hover {
+    color: #dc3545;
+    text-decoration: underline;
+}
+
+.alert {
+    position: relative;
+    padding: .5rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0;
+}
+
 .upvotes .fa-thumbs-up {
+    color: #dc3545;
     font-size: 1.2rem;
+}
+
+.upvotes .fa-thumbs-up:hover {
+    color: #e7727d;
+}
+
+.category-icon {
+    font-size: 1.8rem;
 }
