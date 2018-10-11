@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
 
-{% block page_heading %}Issues{% endblock %}
+{% block page_heading %}Issues Tracker{% endblock %}
 
 {% block content %}
+<div class="row">
+    {% for ticket in tickets %}
+    <div class="col-12">
+        <h4><a href="{% url 'get_ticket' ticket.id %}">{{ ticket.title }}</a></h4>
+        <p class="text-muted">#{{ticket.id}} opened at {{ ticket.created_date.time }} on {{ ticket.created_date.date }} by {% if ticket.user %}{{ ticket.user }}{% else %}Anonymous{% endif%}</p>
+    </div>
+    {% endfor %}
+</div>
 
 {% endblock %}

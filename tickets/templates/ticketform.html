@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load bootstrap_tags %}
+{% block page_heading %}Ticket Form{% endblock %}
+
+{% block content %}
+<form method="POST">
+
+    {% csrf_token %}
+
+    {{ form | as_bootstrap }}
+
+    <button class="btn btn-info" type="submit">Save</button>
+</form>
+{% endblock %}
