@@ -72,22 +72,15 @@ def add_comment(request, ticket_pk):
     """
     try:
         ticket = Ticket.objects.get(pk=ticket_pk)
-        print("Ticket found.")
     except Ticket.DoesNotExist:
         print("No ticket found.")
-
-    print(ticket)
     comment_form = CommentForm(request.POST)
-    print(comment_form)
     if comment_form.is_valid():
-        print("Valid comment form")
         comment = comment_form.save(commit=False)
         comment.ticket = ticket
         comment.save()
-        print ("comment")
-        print(comment)
-
     return redirect(get_ticket, ticket_pk)
+
 
 def complete_payment(request):
     """
