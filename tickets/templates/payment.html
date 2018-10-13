@@ -3,9 +3,25 @@
 {% block page_heading %}Payment{% endblock %}
 
 {% block content %}
+
+<div class="row">
+    <div class="col">
+        <p>Feature tickets require a payment to upvote.  This goes towards development costs.</p>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-12">
+        <form action="{% url 'checkout' %}" method="POST">
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{ stripe_key }}" data-amount="100" data-name="Issue Tracker" data-description="Feature ticket implementation fund" data-currency="usd">
+            </script>
+        </form>
+    </div>
+</div>
 
+<div class="row mt-3">
+    <div class="col">
+        <p><small>Changed your mind? <a href="{% url 'index' %}">Return to home page</a></small></p>
     </div>
 </div>
 {% endblock %}

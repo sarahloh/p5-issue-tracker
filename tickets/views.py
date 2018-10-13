@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Ticket, Comment
 from .forms import TicketForm, CommentForm
+from issue_tracker import settings
 
 def all_tickets(request):
     """
@@ -86,8 +87,30 @@ def complete_payment(request):
     """
     Return the payments.html file
     """
-    return render(request, "payment.html")
+    context = { "stripe_key": settings.STRIPE_PUBLISHABLE }
+    return render(request, "payment.html", context)
 
+def checkout(request):
+    """
+    Complete payment transaction using Stripe
+    """
+    if request.method == "POST":
+        token = request.POST.get("stripeToken")
+    try:
+        charge  = stripe.Charge.create(
+            amount      = 100,
+            currency    = "usd",
+            source      = token,
+            description = "Feature ticket implementation fund"
+        )
+    except stripe.error.CardError as ce:
+        return False, ce
 
+    else:
+        return redirect('thankyou')
 
-
+def thankyou(request):
+    """
+    Return the thankyou page
+    """
+    return render(request, "thankyou.html")
