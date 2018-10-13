@@ -1,7 +1,5 @@
 # Issue Tracker
 
-[![Build Status](https://travis-ci.org/sarahloh/p5-issue-tracker.svg?branch=master)](https://travis-ci.org/sarahloh/p5-issue-tracker)
-
 The Issue Tracker tracks tickets describing a user’s issue.
 
 Issues come in two varieties:
