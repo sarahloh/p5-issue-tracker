@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
-
+{% load bootstrap_tags %}
 {% block page_heading %}#{{ticket.id}} {{ticket.title}}{% endblock %}
 
 {% block content %}
 <div class="row">
-    <div class="col-12">
+    <div class="col-12 col-sm-6">
         <p>
             Status: {{ ticket.status }}
         </p>
@@ -14,6 +14,8 @@
         <p>
             Category: {{ ticket.category }}
         </p>
+    </div>
+    <div class="col-12 col-sm-6">
         <p>
             Created: {{ ticket.created_date.date }} at {{ ticket.created_date.time}}
         </p>
@@ -23,9 +25,37 @@
         <p>
             Author: {% if ticket.user %}{{ ticket.user }}{% else %}Anonymous{% endif%}
         </p>
-        <p>
-            Description: {{ ticket.description }}
-        </p>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-12">
+        <h3>Description</h3>
+        <p>{{ ticket.description }}</p>
+    </div>
+</div>
+<hr>
+<div class="row comments">
+    <h3 class="ml-3">Comments</h3>
+    {% for comment in comments %}
+    <div class="col-12">
+        <blockquote class="blockquote">
+            <p class="m-2 p-3 bg-light">{{ comment.comment }}</p>
+        </blockquote>
+    </div>
+    {% endfor %}
+</div>
+<hr>
+<div class="row comment-form">
+    <div class="col-12">
+        <form method="POST" action={% url 'add_comment' ticket.id %}>
+
+            {% csrf_token %}
+
+            {{ comment_form | as_bootstrap }}
+
+            <button class="btn btn-info" type="submit">Submit</button>
+        </form>
     </div>
 </div>
 {% endblock %}

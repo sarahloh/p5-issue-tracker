@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import Ticket
-from .forms import TicketForm
+from .models import Ticket, Comment
+from .forms import TicketForm, CommentForm
 
 def all_tickets(request):
     """
@@ -19,7 +19,17 @@ def get_ticket(request, pk):
     Or return a 404 error if ticket not found
     """
     ticket = get_object_or_404(Ticket, pk=pk)
-    return render(request, "ticket.html", {'ticket': ticket})
+    try:
+        comments = Comment.objects.filter(ticket=ticket)
+    except Comment.DoesNotExist:
+        print ("No comments in the database yet.")
+        comments = None
+    comment_form = CommentForm()
+    return render(request, "ticket.html", {
+        'ticket': ticket,
+        'comments': comments,
+        'comment_form':comment_form
+    })
 
 
 def create_or_edit_ticket(request, pk=None):
@@ -56,6 +66,28 @@ def upvote_ticket(request, pk, category, user_id):
     else:
         return redirect(complete_payment)
 
+def add_comment(request, ticket_pk):
+    """
+    Add a comment to a ticket
+    """
+    try:
+        ticket = Ticket.objects.get(pk=ticket_pk)
+        print("Ticket found.")
+    except Ticket.DoesNotExist:
+        print("No ticket found.")
+
+    print(ticket)
+    comment_form = CommentForm(request.POST)
+    print(comment_form)
+    if comment_form.is_valid():
+        print("Valid comment form")
+        comment = comment_form.save(commit=False)
+        comment.ticket = ticket
+        comment.save()
+        print ("comment")
+        print(comment)
+
+    return redirect(get_ticket, ticket_pk)
 
 def complete_payment(request):
     """
